@@ -10,7 +10,7 @@ A complete [harfbuzz](https://github.com/harfbuzz/harfbuzz) shaping algorithm po
 
 extern crate alloc;
 
-mod hb;
+pub mod hb;
 
 #[cfg(feature = "std")]
 pub(crate) type U32Set = read_fonts::collections::int_set::U32Set;
