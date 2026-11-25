@@ -12,10 +12,10 @@
 //! are passed as function items; clippy cannot see that through `func_wrap`.
 #![allow(clippy::needless_lifetimes, clippy::elidable_lifetime_names)]
 
-#[cfg(feature = "std")]
+#[cfg(all(feature = "std", debug_assertions))]
 use alloc::string::String;
 use alloc::vec::Vec;
-#[cfg(feature = "std")]
+#[cfg(all(feature = "std", debug_assertions))]
 use core::fmt::Write as _;
 #[cfg(not(feature = "std"))]
 #[allow(unused_imports)]
@@ -1590,8 +1590,10 @@ fn api_script_get_horizontal_direction<'a, 'b, 'c>(
 // Debug output
 // ---------------------------------------------------------------------------
 
+/// Prints a guest's debug message, in debug builds only: a font is not to
+/// write on the stderr of whatever shapes with it.
 fn debug_message<T>(caller: &Caller<'_, T>, memory: Memory, ptr: u32, args: &[i32]) {
-    #[cfg(feature = "std")]
+    #[cfg(all(feature = "std", debug_assertions))]
     {
         let Some(message) = read_cstr(caller, memory, ptr) else {
             return;
@@ -1602,7 +1604,7 @@ fn debug_message<T>(caller: &Caller<'_, T>, memory: Memory, ptr: u32, args: &[i3
         }
         std::eprintln!("[wasm] {text}");
     }
-    #[cfg(not(feature = "std"))]
+    #[cfg(not(all(feature = "std", debug_assertions)))]
     {
         let _ = (caller, memory, ptr, args);
     }

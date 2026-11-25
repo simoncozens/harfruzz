@@ -61,7 +61,8 @@ and imports the standard HarfBuzz host functions from the `env` module:
 - outline/blob: `glyph_outline_free`, `blob_free`
 - shaping: `shape_with` (the `ot` shaper), `feature_copy_contents`,
   `features_free`
-- debug: `debugprint` through `debugprint4`
+- debug: `debugprint` through `debugprint4`; they print to stderr in debug
+  builds and do nothing in release builds
 
 Unknown function imports (for example wasm-bindgen helpers) are bound to
 zero-returning stubs so that modules which never call them still instantiate.
